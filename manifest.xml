@@ -12,7 +12,7 @@
   <HighResolutionIconUrl DefaultValue="https://junaid042.github.io/utm-manager/assets/icon-128.png"/>
   <SupportUrl DefaultValue="https://www.centreblock.org/contact"/>
   <AppDomains>
-    <AppDomain>https://junaid042.github.io/utm-manager/</AppDomain>
+    <AppDomain>https://junaid042.github.io</AppDomain>
     <AppDomain>https://localhost:3000</AppDomain>
   </AppDomains>
   <Hosts>
