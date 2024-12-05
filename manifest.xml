@@ -4,15 +4,16 @@
   xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
   <Id>b4d083e7-d5b9-492f-bc26-be54a61873d6</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Contoso</ProviderName>
+  <ProviderName>CentreBlock</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="UTM-Tags"/>
-  <Description DefaultValue="A template to get started."/>
+  <Description DefaultValue="Management tool to track email click-throughs on the URL in the Outlook auto-signature, courtesy of CentreBlock."/>
   <IconUrl DefaultValue="https://junaid042.github.io/utm-manager/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://junaid042.github.io/utm-manager/assets/icon-128.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <SupportUrl DefaultValue="https://www.centreblock.org/contact"/>
   <AppDomains>
-    <AppDomain>https://www.contoso.com</AppDomain>
+    <AppDomain>https://junaid042.github.io/utm-manager/</AppDomain>
+    <AppDomain>https://localhost:3000</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Mailbox"/>
@@ -92,6 +93,21 @@
                       <SourceLocation resid="Taskpane.Url"/>
                     </Action>
                   </Control>
+                  <!-- <Control xsi:type="Button" id="editsignature">
+                    <Label resid="EditSignature.Label"/>
+                    <Supertip>
+                      <Title resid="EditSignature.Label"/>
+                      <Description resid="EditSignature.Tooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="Icon.16x16"/>
+                      <bt:Image size="32" resid="Icon.32x32"/>
+                      <bt:Image size="80" resid="Icon.80x80"/>
+                    </Icon>
+                    <Action xsi:type="ExecuteFunction">
+                      <FunctionName>EditSignature</FunctionName>
+                    </Action>
+                  </Control> -->
                 </Group>
               </OfficeTab>
             </ExtensionPoint>
@@ -119,11 +135,13 @@
         <bt:ShortStrings>
           <bt:String id="GroupLabel" DefaultValue="UTM Tags"/>
           <bt:String id="TaskpaneButton.Label" DefaultValue="UTM Manager"/>
-          <bt:String id="ActionButton.Label" DefaultValue="Set Default"/>
+          <bt:String id="ActionButton.Label" DefaultValue="Set UTM Url"/>
+          <bt:String id="EditSignature.Label" DefaultValue="Edit Signature"/>
         </bt:ShortStrings>
         <bt:LongStrings>
           <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Opens UTM Manager."/>
           <bt:String id="ActionButton.Tooltip" DefaultValue="Set default Values when clicked."/>
+          <bt:String id="EditSignature.Tooltip" DefaultValue="Click to Open Signature Editor."/>
         </bt:LongStrings>
       </Resources>
     </VersionOverrides>

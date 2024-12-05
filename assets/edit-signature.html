@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
+        type="text/css" />
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <!-- 
+    <link rel="stylesheet"
+        href="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-core/11.1.0/css/fabric.min.css" /> -->
+    <title>Edit Signature</title>
+</head>
+
+<body>
+    <textarea id="froala-editor"></textarea>
+    <!-- <button id="get-html">Get HTML</button> -->
+
+    <div style="display: flex;justify-content: center;padding-top: 12px;"> <button id="get-html"
+            class="ms-Button ms-Button--primary" style="margin-top: 20px;
+        background-color: #1373f1;
+        border: none;
+        color: white;
+        padding: 10px 24px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 2px;
+        ">Save Signature</button>
+
+        <script>
+            Office.onReady(() => {
+
+                //Office.context.ui.addHandlerAsync(Office.EventType.DialogParentMessageReceived, onMessageFromParent);
+                document.getElementById("get-html").onclick = GetHtml;
+
+            });
+
+
+            window.Office.initialize = function (reason) {
+                //_OM = Office.context.document;
+                RegisterMessageChild();
+            }
+
+            function RegisterMessageChild() {
+                Office.context.ui.addHandlerAsync(Office.EventType.DialogParentMessageReceived, onMessageFromParent, onRegisterMessageComplete);
+            }
+
+            function onRegisterMessageComplete(asyncResult) {
+                if (asyncResult.status != Office.AsyncResultStatus.Succeeded) {
+                    console.log(asyncResult.error.message);
+                }
+            }
+
+
+            // Initialize Froala Editor
+            const editor = new FroalaEditor('#froala-editor');
+
+            function onMessageFromParent(arg) {
+                const messageFromParent = JSON.parse(arg.message);
+                let SignatureHtml = messageFromParent.html;
+
+                if (SignatureHtml) {
+                    console.log("froala-editor html set ");
+                    editor.html.set(SignatureHtml);
+                }
+                console.log(messageFromParent);
+            }
+
+
+            async function GetHtml() {
+
+                // Get the HTML content
+                let htmlContent = editor.html.get();
+
+                // Parse the HTML to find all images
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                const images = doc.querySelectorAll('img');
+
+                // Process each image
+                for (let img of images) {
+                    const blobUrl = img.src;
+
+                    // Check if the URL is a blob URL
+                    if (blobUrl.startsWith('blob:')) {
+                        const base64 = await convertBlobToBase64(blobUrl);
+                        img.src = base64; // Replace blob URL with Base64
+                    }
+                }
+
+                // Get the updated HTML
+                htmlContent = doc.body.innerHTML;
+
+                console.log(htmlContent);
+
+                // Send the HTML content back to the main file
+                Office.context.ui.messageParent(JSON.stringify({ html: htmlContent }));
+
+            }
+
+            // Convert blob URL to Base64
+            async function convertBlobToBase64(blobUrl) {
+                const blob = await fetch(blobUrl).then((res) => res.blob());
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(blob); // Convert blob to Base64
+                });
+            }
+
+
+        </script>
+</body>
+
+</html>
